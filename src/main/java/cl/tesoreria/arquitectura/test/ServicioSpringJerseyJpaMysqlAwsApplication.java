@@ -9,5 +9,4 @@ public class ServicioSpringJerseyJpaMysqlAwsApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServicioSpringJerseyJpaMysqlAwsApplication.class, args);
 	}
-
 }

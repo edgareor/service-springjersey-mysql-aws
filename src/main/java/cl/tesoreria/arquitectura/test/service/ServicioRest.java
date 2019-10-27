@@ -20,12 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import cl.tesoreria.arquitectura.test.entity.DataEntrada;
 import cl.tesoreria.arquitectura.test.entity.Persona;
 import cl.tesoreria.arquitectura.test.jpa.InterfacePersonasDAO;
+import io.swagger.annotations.Api;
 
 @Controller
 @Transactional
 @Path("/service-name")
+@Api
 public class ServicioRest {
 	
 	@Autowired
@@ -33,8 +36,11 @@ public class ServicioRest {
 	
 	@GET
 	@Path("/timenow")
+	@Consumes({"application/json"})
 	@Produces({"application/json"})
-	public Map<String, Object> getStatus() {
+	public Response getStatus() {
+		
+		//String dato = (String) obj.get("data");
 		
 		Date fecha = new Date ();
 		Locale currentLocale = new Locale("EN");
@@ -42,9 +48,11 @@ public class ServicioRest {
 		String output = formato.format(fecha);
 		
 		Map<String, Object> collection = new HashMap<String, Object>();
+		
 		collection.put("GetStatus", output);
+		//collection.put("Data Body", dato);
 
-         	return collection;
+		return Response.status(200).entity(collection).build();
 	}
 	
 	@GET
@@ -55,6 +63,23 @@ public class ServicioRest {
          	List<Persona> out = dao.findAll();
          	return out;
 	}
+	
+	
+	@POST
+	@Path("/imprime-data")
+	@Consumes({"application/json"})
+	@Produces({"application/json"})
+	public Response imprimeData(DataEntrada obj) {
+		
+		String dato = obj.getData();
+		
+		Map<String, Object> collection = new HashMap<String, Object>();
+		
+		collection.put("Data Body", dato);
+
+		return Response.status(200).entity(collection).build();
+	}
+	
 	
 	@POST
 	@Path("/personas")
